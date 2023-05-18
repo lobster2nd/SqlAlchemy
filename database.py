@@ -9,7 +9,7 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     added = db.Column(db.DateTime, nullable=False, default=func.now())
-    #is_read = db.Column(db.Bool, default=False)
+    is_read = db.Column(db.Boolean, default=True)
 
     genre_id = db.Column(db.Integer, db.ForeignKey("genre.id", ondelete='SET NULL'))
     genre = relationship("Genre", back_populates="books")

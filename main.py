@@ -16,7 +16,7 @@ with app.app_context():
     # creating and adding genres
     comedy = Genre(name='Комедия')
     db.session.add(comedy)
-    story = Genre(name='повесть')
+    story = Genre(name='Повесть')
     db.session.add(story)
 
     # creating and adding authors
@@ -32,15 +32,36 @@ with app.app_context():
     db.session.add(nedorosl)
     woe_from_wit = Book(name='Горе от ума', genre=comedy, author=griboedov)
     db.session.add(woe_from_wit)
-    capitans_daughter = Book(name='капитанская дочка', genre=story, author=pushkin)
+    capitans_daughter = Book(name='Капитанская дочка', genre=story, author=pushkin)
     db.session.add(capitans_daughter)
 
+    db.session.commit()
 
 
 @app.route("/")
 def all_books():
-    books = Book.querry.all()
+    books = Book.query.all()
     return render_template("books.html", books=books)
+
+
+@app.route("/genre/<int:genre_id>")
+def books_by_genres(genre_id):
+    genre = Genre.query.get_or_404(genre_id)
+    return render_template(
+        "books_by_genres.html",
+        genre_name=genre.name,
+        books=genre.books,
+    )
+
+
+@app.route("/author/<int:author_id>")
+def books_by_author(author_id):
+    author = Author.query.get_or_404(author_id)
+    return render_template(
+        "books_by_author.html",
+        author_name=author.name,
+        books=author.books
+    )
 
 
 

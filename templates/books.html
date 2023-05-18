@@ -1,14 +1,22 @@
 {% extends "layout.html" %}
 {% block body %}
-<h2>Все книги</h2>>
+<h2>Все книги</h2>
     {%- for book in books %}
         <ul>
-        <li> Название: {{ book.name }} </li>
-        <li>
-            >Автор: {{ book.genre.name }}
-            >Жанр: {{ book.genre.name }}
-        </li>
-        <li> Добавлен: {{ book.added.strftime("%d-%m-%Y") }} </li>
+            <li>Название: {{ book.name }} </li>
+            <li>
+                Автор: <a href="{{ url_for('books_by_author', author_id=book.author.id) }}">{{ book.author.name }}</a>
+            </li>
+            <li>
+                Жанр: <a href="{{ url_for('books_by_genres', genre_id=book.genre.id) }}">{{ book.genre.name }}</a>
+            </li>
+            <li>Дата добавления: {{ book.added.strftime("%d-%m-%Y") }}</li>
+            <li>
+                <label>
+                    <input type="checkbox" {{checked if book.is_read }}>Прочитано
+                    <input type="submit" value="Сохранить">
+                </label>
+            </li>
       </ul>
       <hr>
 {%- endfor %}
