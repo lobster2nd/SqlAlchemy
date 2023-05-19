@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h2>Добавить книгу</h2>
+    <form method='post'>
+        Название книги: <input type="text" name="name"><br><br>
+        Автор: <input type="text" name="author"><br><br>
+        Жанр: <input type="text" name="genre"><br><br>
+    <input type="submit" value="Сохранить">
+    </form>
+{% endblock %}

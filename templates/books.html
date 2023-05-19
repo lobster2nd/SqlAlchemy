@@ -13,11 +13,12 @@
             <li>Дата добавления: {{ book.added.strftime("%d-%m-%Y") }}</li>
             <li>
                 <label>
-                    <input type="checkbox" {{checked if book.is_read }}>Прочитано
+                    <input type="checkbox">Прочитано
                     <input type="submit" value="Сохранить">
                 </label>
             </li>
       </ul>
       <hr>
 {%- endfor %}
+<a href="{{ url_for('add_book') }}">Добавить книгу</a>
 {% endblock %}

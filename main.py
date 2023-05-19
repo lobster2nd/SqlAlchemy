@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask
+from flask import Flask, request, redirect, url_for
 from flask import render_template
+from sqlalchemy import desc
 
 from database import db, Book, Genre, Author
 
@@ -40,7 +41,7 @@ with app.app_context():
 
 @app.route("/")
 def all_books():
-    books = Book.query.all()
+    books = Book.query.order_by(desc(Book.added)).limit(15).all()
     return render_template("books.html", books=books)
 
 
@@ -63,6 +64,20 @@ def books_by_author(author_id):
         books=author.books
     )
 
+
+@app.route("/add_book", methods=["GET", "POST"])
+def add_book():
+    if request.method == "POST":
+        """book = Book(
+            name=request.form["name"],
+            genre=request.form["genre"],
+            author=request.form["author"]
+        )
+        db.session.add(book)
+        db.session.commit()
+        return redirect(url_for("database"))"""
+
+    return render_template("add_book.html")
 
 
 if __name__ == '__main__':
