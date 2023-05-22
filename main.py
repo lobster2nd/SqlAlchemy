@@ -39,8 +39,15 @@ with app.app_context():
     db.session.commit()
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def all_books():
+    if request.method == 'POST':
+        book_id = request.form.get('is_read')
+        if book_id:
+            book = Book.query.get(book_id)
+            book.is_read = True
+            db.session.commit()
+
     books = Book.query.order_by(desc(Book.added)).limit(15).all()
     return render_template("books.html", books=books)
 
@@ -64,18 +71,16 @@ def books_by_author(author_id):
         books=author.books
     )
 
-
+# section to add book to database
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
     if request.method == "POST":
-        """book = Book(
-            name=request.form["name"],
-            genre=request.form["genre"],
-            author=request.form["author"]
-        )
+        book_name, book_author, book_genre = request.form.get('name'), request.form.get('author'), request.form.get(
+            'genre')
+        book = Book(name=book_name, genre=book_genre, author=book_author)
         db.session.add(book)
         db.session.commit()
-        return redirect(url_for("database"))"""
+        redirect(url_for("/"))
 
     return render_template("add_book.html")
 

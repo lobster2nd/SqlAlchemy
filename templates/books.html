@@ -11,14 +11,17 @@
                 Жанр: <a href="{{ url_for('books_by_genres', genre_id=book.genre.id) }}">{{ book.genre.name }}</a>
             </li>
             <li>Дата добавления: {{ book.added.strftime("%d-%m-%Y") }}</li>
+            <li>Прочитано: {{'Да' if book.is_read else 'Нет'}}</li>
             <li>
-                <label>
-                    <input type="checkbox">Прочитано
-                    <input type="submit" value="Сохранить">
-                </label>
+                <form action="/" method="post">
+                    <label>
+                        <input type="checkbox" name="is_read" value="{{book.id}}">Прочитано
+                    </label>
+                    <input type="submit" value="Сохранить" />
+                </form>
             </li>
       </ul>
       <hr>
 {%- endfor %}
-<a href="{{ url_for('add_book') }}">Добавить книгу</a>
+<!--<a href="{{ url_for('add_book') }}">Добавить книгу</a>-->
 {% endblock %}
