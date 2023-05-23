@@ -1,0 +1,1 @@
+With this app you can view all books in database, books by genres, books by authors and add new books. Just click items you are interested in

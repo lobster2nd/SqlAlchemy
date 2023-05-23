@@ -3,6 +3,7 @@ import os
 from flask import Flask, request, redirect, url_for
 from flask import render_template
 from sqlalchemy import desc
+from werkzeug.exceptions import NotFound
 
 from database import db, Book, Genre, Author
 
@@ -71,16 +72,35 @@ def books_by_author(author_id):
         books=author.books
     )
 
+
 # section to add book to database
+@app.errorhandler(NotFound)
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
     if request.method == "POST":
         book_name, book_author, book_genre = request.form.get('name'), request.form.get('author'), request.form.get(
             'genre')
-        book = Book(name=book_name, genre=book_genre, author=book_author)
+
+        try:
+            genre = Genre.query.filter_by(name=book_genre).first_or_404()
+        except NotFound:
+            g = Genre(name=book_genre)
+            db.session.add(g)
+            db.session.commit()
+            genre = Genre.query.filter_by(name=book_genre).first_or_404()
+
+        try:
+            author = Author.query.filter_by(name=book_author).first_or_404()
+        except NotFound:
+            a = Author(name=book_author)
+            db.session.add(a)
+            db.session.commit()
+            author = Author.query.filter_by(name=book_author).first_or_404()
+
+        book = Book(name=book_name, genre=genre, author=author)
         db.session.add(book)
         db.session.commit()
-        redirect(url_for("/"))
+        return redirect(url_for("all_books"))
 
     return render_template("add_book.html")
 

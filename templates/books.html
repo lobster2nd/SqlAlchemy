@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <h2>Все книги</h2>
+<a href="{{ url_for('add_book') }}">Добавить книгу</a>
     {%- for book in books %}
         <ul>
             <li>Название: {{ book.name }} </li>
@@ -23,5 +24,4 @@
       </ul>
       <hr>
 {%- endfor %}
-<!--<a href="{{ url_for('add_book') }}">Добавить книгу</a>-->
 {% endblock %}
